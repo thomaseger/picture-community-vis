@@ -1,0 +1,12 @@
+@(users: List[User])
+
+@import helper._
+
+@main("Users") {   
+    <h2>Users</h2>   
+    <ul>
+        @for(user <- users) {
+            <li>@user.getName()</li>
+        }
+    </ul>
+}
