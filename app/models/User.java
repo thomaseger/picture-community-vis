@@ -1,14 +1,21 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import play.data.validation.Constraints.Required;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class User {
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
+
+@Entity
+public class User extends Model {
+
+	private static final long serialVersionUID = 1L;
 	
-	private static List<User> allUsers = new ArrayList<User>();
-	
+	public static Finder<Long, User> find = new Finder<Long, User>(Long.class, User.class);
+
+	@Id
 	private Long id;
 
 	@Required
@@ -42,10 +49,10 @@ public class User {
 	}
 
 	public static List<User> all() {
-		return allUsers;
+		return find.all();
 	}
 
 	public static void create(User user) {
-		allUsers.add(user);
+		user.save();
 	}
 }
