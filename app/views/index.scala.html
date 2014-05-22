@@ -1,12 +1,7 @@
-@(userForm: Form[User])
-
 @import helper._
 
-@main("Welcome") {    
-    <h2>Register</h2>   
-    @form(routes.UserController.register()) {
-        @inputText(userForm("name"))
-        @inputText(userForm("password"))
-        <input type="submit" value="Create">
-    }
+@main("Welcome") {
+
+	<p>This is the picture community based on the play framework.</p>
+	
 }

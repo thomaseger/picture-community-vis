@@ -12,8 +12,9 @@ import play.db.ebean.Model;
 public class User extends Model {
 
 	private static final long serialVersionUID = 1L;
-	
-	public static Finder<Long, User> find = new Finder<Long, User>(Long.class, User.class);
+
+	public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
+			User.class);
 
 	@Id
 	private Long id;
@@ -50,6 +51,13 @@ public class User extends Model {
 
 	public static List<User> all() {
 		return find.all();
+	}
+
+	/**
+	 * @return the authenticated user or null if authentication failed
+	 */
+	public static User authenticate(String name, String password) {
+		return find.where().eq("name", name).eq("password", password).findUnique();
 	}
 
 	public static void create(User user) {

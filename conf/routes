@@ -4,6 +4,11 @@
 
 # Home page
 GET     /                       controllers.Application.index()
+GET 	/register				controllers.Application.register()
+
+GET     /login                  controllers.Application.login()
+POST	/login					controllers.Application.authenticate()
+GET     /logout                 controllers.Application.logout()
 
 # User handling
 GET		/users					controllers.UserController.index()

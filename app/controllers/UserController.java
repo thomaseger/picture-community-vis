@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import views.html.register;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -16,7 +17,7 @@ public class UserController extends Controller {
 	public static Result register() {
 		Form<User> filledForm = userForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			return badRequest(views.html.index.render(filledForm));
+			return badRequest(register.render(filledForm));
 		} else {
 			User.create(filledForm.get());
 			return redirect(routes.UserController.index());
