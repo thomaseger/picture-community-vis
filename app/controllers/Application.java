@@ -34,7 +34,8 @@ public class Application extends Controller {
 	}
 	
 	public static Result logout() {
-		return TODO;
+		session().clear();
+	    return redirect(routes.Application.login());
 	}
 
 	public static class Login {
@@ -45,8 +46,6 @@ public class Application extends Controller {
 
 		public String validate() {
 			if (User.authenticate(name, password) == null) {
-				System.out.println(name);
-				System.out.println(password);
 				return "Invalid user or password";
 			}
 			return null;

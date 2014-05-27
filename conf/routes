@@ -14,5 +14,8 @@ GET     /logout                 controllers.Application.logout()
 GET		/users					controllers.UserController.index()
 POST    /users                  controllers.UserController.register()
 
+# Picture handling
+GET 	/pictures				controllers.PictureController.index()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
