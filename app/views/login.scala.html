@@ -3,6 +3,9 @@
 @import helper._
 
 @main("Login") {
+	
+	<p>This is the picture community based on the play framework.</p>
+
 	<h2>Login</h2>
 	
 	@if(loginForm.hasGlobalErrors) {
@@ -14,6 +17,6 @@
     @form(routes.Application.authenticate()) {
         @inputText(loginForm("name"))
         @inputText(loginForm("password"))
-        <input type="submit" value="Login">
+        <input type="submit" value="Login"> or <a href="@routes.Application.register()">Register</a> 
     }
 }

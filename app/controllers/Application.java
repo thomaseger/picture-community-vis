@@ -7,11 +7,13 @@ import views.html.register;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class Application extends Controller {
 
+	@Security.Authenticated(Secured.class)
 	public static Result index() {
-		return ok(index.render());
+		return ok(index.render(User.find.where().eq("name", request().username()).findUnique()));
 	}
 	
 	public static Result register() {
@@ -33,6 +35,7 @@ public class Application extends Controller {
 		}
 	}
 	
+	@Security.Authenticated(Secured.class)
 	public static Result logout() {
 		session().clear();
 	    return redirect(routes.Application.login());
