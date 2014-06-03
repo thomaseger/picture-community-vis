@@ -16,6 +16,8 @@ POST    /users                  controllers.UserController.register()
 
 # Picture handling
 GET 	/pictures				controllers.PictureController.index()
+GET		/pictures/thumbnail/:id			controllers.PictureController.thumbnail(id: Long)
+POST	/pictures/newPicture	controllers.PictureController.newPicture()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

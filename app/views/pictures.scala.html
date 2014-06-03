@@ -1,0 +1,21 @@
+@(title: String, pictures: List[Picture])
+
+@import helper._
+
+@main(title) {
+
+	<h2>Neues Bild hochladen:</h2>
+    @form(action = routes.PictureController.newPicture, 'enctype -> "multipart/form-data") {
+		<input type="file" id="file"></input>
+		<input type="text" id="description"></input>
+		<input type="checkbox" id="publicVisible"></input>
+        <input type="submit" value="upload">
+    }
+   
+    <h2>@title</h2>   
+    <ul>
+        @for(pic <- pictures) {
+            <li><a href="@routes.PictureController.thumbnail(pic.getId())" >@pic.getDescription()</a></li>
+        }
+    </ul>
+}

@@ -52,6 +52,10 @@ public class User extends Model {
 	public static List<User> all() {
 		return find.all();
 	}
+	
+	public static User byName(String name) {
+		return find.where().eq("name", name).findUnique();
+	}
 
 	/**
 	 * @return the authenticated user or null if authentication failed
