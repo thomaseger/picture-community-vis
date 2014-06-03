@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import play.data.validation.Constraints.Required;
@@ -35,6 +36,7 @@ public class Picture extends Model {
 
 	// Eigentlicher Inhalt des Bildes.
 	@Required
+	@Lob
 	private byte[] data;
 
 	// Textuelle Beschreibung des Bildes.
@@ -230,10 +232,8 @@ public class Picture extends Model {
 	}
 	
 	public static List<Picture> getPublicImagesOfUser(String username) {
-		User user = User.find.where().eq("name", username).findUnique();
-
 		List<Picture> pictures = find.where()
-				.eq("owner", user)
+				.eq("owner.name", username)
 				.eq("publicVisible", true)
 				.findList();
 		return pictures;

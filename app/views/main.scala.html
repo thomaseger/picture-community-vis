@@ -24,15 +24,16 @@
           <a class="navbar-brand" href="/">Picture Community</a>
         </div>
         
-        @if(session.get("name") != null) {
 	        <div class="collapse navbar-collapse">
 	          <ul class="nav navbar-nav">
-	            <li><a href="@routes.PictureController.index()">Pictures</a></li>
 	            <li><a href="@routes.UserController.index()">Users</a></li>
+        @if(session.get("name") != null) {
+	            <li><a href="@routes.PictureController.index()">Pictures</a></li>
+	            <li><a href="@routes.PictureController.uploadForm()">Upload</a></li>
 	            <li><a href="@routes.Application.logout()">Logout</a></li>
+		}
 	          </ul>
 	        </div>
-		}
 		
       </div>
     </div>

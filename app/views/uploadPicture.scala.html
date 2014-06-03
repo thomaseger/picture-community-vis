@@ -1,0 +1,11 @@
+@import helper._
+
+@main("Upload") {
+	<h2>Upload Picture:</h2>
+    @form(action = routes.PictureController.newPicture, 'enctype -> "multipart/form-data") {
+		<input type="file" name="file" id="file"></input>
+		<input type="text" name="description" id="description"></input>
+		<input type="checkbox" name="publicVisible" id="publicVisible"></input>
+        <input type="submit" name="upload" value="upload">
+    }
+}

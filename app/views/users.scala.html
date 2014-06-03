@@ -6,7 +6,11 @@
     <h2>Users</h2>   
     <ul>
         @for(user <- users) {
-            <li>@user.getName()</li>
+            <li>
+            	<a href="@routes.PictureController.pictures(user.getName())">
+	            	@user.getName()
+            	</a>
+            </li>
         }
     </ul>
 }

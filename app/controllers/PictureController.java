@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
 import models.Picture;
 import models.User;
+
+import org.apache.commons.io.FileUtils;
+
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -23,13 +24,32 @@ public class PictureController extends Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
-		String username = request().username();
-		List<Picture> pictures = Picture.getAllImagesOfUser(username);
-		return ok(views.html.pictures.render("Eigene Bilder", pictures));
+		return redirect(routes.PictureController.pictures(request().username()));
 	}
 	
+	public static Result pictures(String username) {
+		String loggedInUsername = session().get("name");
+		List<Picture> pictures;
+		if (username.equals(loggedInUsername)) {
+			pictures = Picture.getAllImagesOfUser(username);
+		} else {
+			pictures = Picture.getPublicImagesOfUser(username);
+		}
+		return ok(views.html.pictures.render("Bilder von " + username, pictures));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result uploadForm() {
+		return ok(views.html.uploadPicture.render());
+	}
+	
+	@Security.Authenticated(Secured.class)
 	public static Result newPicture() throws IOException {
+		String username = request().username();
+		
 		DynamicForm requestData = DynamicForm.form().bindFromRequest();
+		System.out.println("data: " + requestData.data());
+		System.out.println("public: " + requestData.get("publicVisible"));
 		
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("file");
@@ -38,20 +58,20 @@ public class PictureController extends Controller {
 			String contentType = picture.getContentType(); 
 			File file = picture.getFile();
 			String description = requestData.get("description");
-			Boolean publicVisible = Boolean.valueOf(requestData.get("publicVisible"));
+			Boolean publicVisible = "on".equalsIgnoreCase(requestData.get("publicVisible"));
 			
 			Picture pic = new Picture();
 			pic.setName(fileName);
 			pic.setCreationDate(new Date());
-			pic.setOwner(User.byName(request().username()));
-			pic.setMimeType(contentType);
+			pic.setOwner(User.byName(username));
 			pic.setPublicVisible(publicVisible);
 			pic.setData(FileUtils.readFileToByteArray(file));
 			pic.setDescription(description);
+			pic.setMimeType(contentType);
 			
 			Picture.newPicture(pic);
 			
-			return ok("File uploaded");
+			return redirect(routes.PictureController.index());
 		} else {
 			flash("error", "Missing file");
 			return redirect(routes.Application.index());    
@@ -60,8 +80,13 @@ public class PictureController extends Controller {
 	}
 	
 	public static Result thumbnail(Long id) {
-		Picture pic = Picture.find.where().eq("id", id).findUnique();
+		String username = session().get("name");
 		
-		return ok(pic.getData()).as(pic.getMimeType());
+		Picture pic = Picture.find.where().eq("id", id).findUnique();
+		if (pic.isPublicVisible() || pic.getOwner().getName().equals(username)) {
+			return ok(pic.getData()).as(pic.getMimeType());
+		} else {
+			return forbidden("Access denied!");
+		}
 	}
 }

@@ -16,7 +16,9 @@ POST    /users                  controllers.UserController.register()
 
 # Picture handling
 GET 	/pictures				controllers.PictureController.index()
+GET		/pictures/user/:username controllers.PictureController.pictures(username: String)
 GET		/pictures/thumbnail/:id			controllers.PictureController.thumbnail(id: Long)
+GET		/pictures/uploadForm	controllers.PictureController.uploadForm()
 POST	/pictures/newPicture	controllers.PictureController.newPicture()
 
 # Map static resources from the /public folder to the /assets URL path
